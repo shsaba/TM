@@ -14,5 +14,5 @@ $app['db.options'] = array(
     'host' => 'localhost',
     'dbname' => 'tasksmanager',
     'user' => 'root',
-    'password' => '',
+    'password' => '12101989',
 );
