@@ -2,6 +2,8 @@
 
 use Silex\Provider\TranslationServiceProvider;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
+use Silex\Provider\FormServiceProvider;
+
 
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__ . '/../resources/views',
@@ -25,6 +27,13 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
         'password' => '12101989',
         'charset' => 'utf8',
     ),
+));
+
+$app->register(new FormServiceProvider());
+
+$app->register(new Silex\Provider\ValidatorServiceProvider());
+$app->register(new Silex\Provider\TranslationServiceProvider(), array(
+    'translator.domains' => array(),
 ));
 
 return $app;
