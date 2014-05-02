@@ -9,7 +9,7 @@
 
     <meta name="viewport" content="width=device-width">
 
-    <link rel="stylesheet" href="{{ app.request.basepath }}/assets/css/styles.css">
+    <link rel="stylesheet" href="{{ app.request.basepath }}/css/styles.css">
 
     <script src="{{ app.request.basepath }}/js/libs/modernizr-2.5.3-respond-1.1.0.min.js"></script>
 </head>
@@ -22,11 +22,11 @@
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
     </button>
-    <a class="navbar-brand" href="#">Brand</a>
+    <a class="navbar-brand" href="#">{{ 'Project_name'|trans }}</a>
   </div>
   <div class="navbar-collapse collapse navbar-responsive-collapse">
     <ul class="nav navbar-nav">
-      <li class="active"><a href="#">Active</a></li>
+      <li class="active"><a href="#">{{ 'Reports'|trans }}</a></li>
       <li><a href="#">Link</a></li>
       <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
@@ -59,7 +59,34 @@
     </ul>
   </div>
 </div>
+    <div class="container">
+
+      <div class="page-header" id="banner">
+        <div class="row">
+          <div class="col-lg-6">
+            <h1>Flatly</h1>
+            <p class="lead">Flat and modern</p>
+          </div>
+          <div class="col-lg-6" style="padding: 15px 15px 0 15px;">
+            <div class="well sponsor">
+              <a href="http://srv.buysellads.com/direct/click/track/yes/x/G6NDC27ICWAI627UCWALYK7UCKBILKJMCT7I5" onclick="_gaq.push(['_trackEvent', 'banner', 'click', 'treehouse']);" rel="nofollow" target="_blank">
+                <span style="float: left; margin-right: 15px;">
+                  <img src="http://srv.buysellads.com/direct/image/track/yes/x/G6NDC27ICWAI627UCWALYK7UCKBILKJMCT7I5" onload="_gaq.push(['_trackEvent', 'banner', 'impression', 'treehouse']);" width="175" height="135">
+                </span>
+              </a>
+              <a href="http://srv.buysellads.com/direct/click/track/yes/x/G6NDC27ICWAI627UCWALYK7UCKBILKJMCT7I5" onclick="_gaq.push(['_trackEvent', 'banner', 'click', 'treehouse']);" rel="nofollow" target="_blank">
+                <h4 style="margin-bottom: 0.4em;">Treehouse</h4>
+                <div class="clearfix">
+                  <p>Learn Web Design, Coding, Mobile App Development &amp; More.</p>
+                  <p>Start Learning for Free!</p>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
 {% block content %}
 {% endblock %}
+    </div>
 </body>
 </html>
