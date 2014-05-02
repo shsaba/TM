@@ -3,7 +3,8 @@
 use Silex\Provider\TranslationServiceProvider;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
 use Silex\Provider\FormServiceProvider;
-
+use Silex\Provider\WebProfilerServiceProvider;
+use Silex\Provider\ServiceControllerServiceProvider;
 
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__ . '/../resources/views',
@@ -18,22 +19,27 @@ $app['translator'] = $app->share($app->extend('translator', function($translator
             return $translator;
         }));
 
+
 $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     'db.options' => array(
         'driver' => 'pdo_mysql',
         'host' => '127.0.0.1',
         'dbname' => 'tasksmanager',
         'user' => 'root',
-        'password' => '12101989',
+        'password' => '',
         'charset' => 'utf8',
     ),
 ));
 
+if ($app['debug'] && isset($app['cache.path'])) {
+    $app->register(new ServiceControllerServiceProvider());
+    $app->register(new WebProfilerServiceProvider(), array(
+        'profiler.cache_dir' => $app['cache.path'].'/profiler',
+    ));
+}
+
 $app->register(new FormServiceProvider());
 
 $app->register(new Silex\Provider\ValidatorServiceProvider());
-$app->register(new Silex\Provider\TranslationServiceProvider(), array(
-    'translator.domains' => array(),
-));
 
 return $app;

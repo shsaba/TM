@@ -1,35 +1,26 @@
 <?php
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints as Assert;
+use Silex\Provider\TranslationServiceProvider;
+use Silex\Application\TranslationTrait;
 
 $app->match('/', function (Request $request) use ($app) {
 
 
-    // some default data for when the form is displayed the first time
     $data = array(
-        'name' => 'Your name',
-        'email' => 'Your email',
+        'name' => 'tt',
     );
 
     $form = $app['form.factory']->createBuilder('form')
-            ->add('name', 'text', array(
+            ->add(
+                    'name', 'text', array(
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'min' => 5)))
-            ))
-            ->add('email', 'text', array(
-                'constraints' => new Assert\Email()
-            ))
-            ->add('gender', 'choice', array(
-                'choices' => array(
-                    1 => 'male',
-                    2 => 'female'),
-                'expanded' => true,
-                'constraints' => new Assert\Choice(array(
-                    1,
-                    2)),
+                        'min' => 5))),
+                'label' => 'Catégorie'
             ))
             ->getForm();
 
@@ -38,12 +29,29 @@ $app->match('/', function (Request $request) use ($app) {
     if ($form->isValid()) {
         $data = $form->getData();
 
-        // do something with the data
-        // redirect somewhere
-        return $app->redirect('/');
+        print_r($data);
+        //return $app->redirect(__DIR__.'/web/');
     }
 
     // display the form
-    return $app['twig']->render('index.html.twig', array(
+    return $app['twig']->render('tasksCategories.html.twig', array(
                 'form' => $form->createView()));
+});
+
+
+
+$app->error(function (\Exception $e, $code) use ($app) {
+    if ($app['debug']) {
+        return;
+    }
+
+    switch ($code) {
+        case 404:
+            $message = 'The requested page could not be found.';
+            break;
+        default:
+            $message = 'We are sorry, but something went terribly wrong.';
+    }
+
+    return new Response($message, $code);
 });
