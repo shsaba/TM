@@ -8,6 +8,7 @@ use Silex\Provider\ServiceControllerServiceProvider;
 
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__ . '/../resources/views',
+    'twig.form.templates' => array('form_div_layout.html.twig', 'common/form_div_layout.html.twig'),
 ));
 
 
@@ -31,12 +32,6 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     ),
 ));
 
-if ($app['debug'] && isset($app['cache.path'])) {
-    $app->register(new ServiceControllerServiceProvider());
-    $app->register(new WebProfilerServiceProvider(), array(
-        'profiler.cache_dir' => $app['cache.path'].'/profiler',
-    ));
-}
 
 $app->register(new FormServiceProvider());
 

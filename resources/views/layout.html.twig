@@ -1,92 +1,62 @@
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-
     <title>{{ 'Homepage'|trans }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ app.request.basepath }}/css/bootstrap.css">
+    <link rel="stylesheet" href="{{ app.request.basepath }}/css/bootswatch.min.css">
 
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <meta name="viewport" content="width=device-width">
-
-    <link rel="stylesheet" href="{{ app.request.basepath }}/css/styles.css">
-
-    <script src="{{ app.request.basepath }}/js/libs/modernizr-2.5.3-respond-1.1.0.min.js"></script>
 </head>
 <body>
-
-<div class="navbar navbar-default">
-  <div class="navbar-header">
-    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </button>
-    <a class="navbar-brand" href="#">{{ 'Project_name'|trans }}</a>
-  </div>
-  <div class="navbar-collapse collapse navbar-responsive-collapse">
-    <ul class="nav navbar-nav">
-      <li class="active"><a href="#">{{ 'Reports'|trans }}</a></li>
-      <li><a href="#">Link</a></li>
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-        <ul class="dropdown-menu">
-          <li><a href="#">Action</a></li>
-          <li><a href="#">Another action</a></li>
-          <li><a href="#">Something else here</a></li>
-          <li class="divider"></li>
-          <li class="dropdown-header">Dropdown header</li>
-          <li><a href="#">Separated link</a></li>
-          <li><a href="#">One more separated link</a></li>
-        </ul>
-      </li>
-    </ul>
-    <form class="navbar-form navbar-left">
-      <input type="text" class="form-control col-lg-8" placeholder="Search">
-    </form>
-    <ul class="nav navbar-nav navbar-right">
-      <li><a href="#">Link</a></li>
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-        <ul class="dropdown-menu">
-          <li><a href="#">Action</a></li>
-          <li><a href="#">Another action</a></li>
-          <li><a href="#">Something else here</a></li>
-          <li class="divider"></li>
-          <li><a href="#">Separated link</a></li>
-        </ul>
-      </li>
-    </ul>
-  </div>
-</div>
-    <div class="container">
-
-      <div class="page-header" id="banner">
-        <div class="row">
-          <div class="col-lg-6">
-            <h1>Flatly</h1>
-            <p class="lead">Flat and modern</p>
-          </div>
-          <div class="col-lg-6" style="padding: 15px 15px 0 15px;">
-            <div class="well sponsor">
-              <a href="http://srv.buysellads.com/direct/click/track/yes/x/G6NDC27ICWAI627UCWALYK7UCKBILKJMCT7I5" onclick="_gaq.push(['_trackEvent', 'banner', 'click', 'treehouse']);" rel="nofollow" target="_blank">
-                <span style="float: left; margin-right: 15px;">
-                  <img src="http://srv.buysellads.com/direct/image/track/yes/x/G6NDC27ICWAI627UCWALYK7UCKBILKJMCT7I5" onload="_gaq.push(['_trackEvent', 'banner', 'impression', 'treehouse']);" width="175" height="135">
-                </span>
-              </a>
-              <a href="http://srv.buysellads.com/direct/click/track/yes/x/G6NDC27ICWAI627UCWALYK7UCKBILKJMCT7I5" onclick="_gaq.push(['_trackEvent', 'banner', 'click', 'treehouse']);" rel="nofollow" target="_blank">
-                <h4 style="margin-bottom: 0.4em;">Treehouse</h4>
-                <div class="clearfix">
-                  <p>Learn Web Design, Coding, Mobile App Development &amp; More.</p>
-                  <p>Start Learning for Free!</p>
-                </div>
-              </a>
+    <div class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a href="../" class="navbar-brand">{{ 'Project_name'|trans }}</a>
+                <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
             </div>
-          </div>
+            <div class="navbar-collapse collapse" id="navbar-main">
+                <ul class="nav navbar-nav">
+                    <li class="active">
+                        <a href="../help/">{{ 'Reports'|trans }}</a>
+                    </li>
+                    <li>
+                        <a href="http://news.bootswatch.com">Blog</a>
+                    </li>
+                </ul>
+                <form class="navbar-form navbar-left">
+                    <input type="text" class="form-control col-lg-8" placeholder="Search">
+                </form>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#">Link</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+            </div>
         </div>
-      </div>
-{% block content %}
-{% endblock %}
     </div>
+
+
+    <div class="container">
+            {% block content %}
+            {% endblock %}
+    </div>
+
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="{{ app.request.basepath }}/js/bootstrap.min.js"></script>
+    <script src="{{ app.request.basepath }}/js/scripts.js"></script>
 </body>
 </html>
