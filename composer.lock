@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "6926513829263da9490035d3850d8504",
+    "hash": "ff5c4d2254037fd7c7ce57cd0f143599",
     "packages": [
         {
             "name": "doctrine/common",
@@ -226,12 +226,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/silexphp/Silex.git",
-                "reference": "6d9e3fe4d7d9ed563800ee8b4559bd51c13457e5"
+                "reference": "6fdeeba82d2ccd33f5d498cbd080735604eab935"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/silexphp/Silex/zipball/6d9e3fe4d7d9ed563800ee8b4559bd51c13457e5",
-                "reference": "6d9e3fe4d7d9ed563800ee8b4559bd51c13457e5",
+                "url": "https://api.github.com/repos/silexphp/Silex/zipball/6fdeeba82d2ccd33f5d498cbd080735604eab935",
+                "reference": "6fdeeba82d2ccd33f5d498cbd080735604eab935",
                 "shasum": ""
             },
             "require": {
@@ -304,7 +304,7 @@
             "keywords": [
                 "microframework"
             ],
-            "time": "2014-04-15 20:53:03"
+            "time": "2014-05-04 16:34:35"
         },
         {
             "name": "symfony/config",
@@ -1252,12 +1252,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Translation.git",
-                "reference": "d456c7b7510b6510d27b5addd0bfbf1f83c70d8d"
+                "reference": "254931b0bce3c70f6f1d58a403873c2628260a5b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Translation/zipball/d456c7b7510b6510d27b5addd0bfbf1f83c70d8d",
-                "reference": "d456c7b7510b6510d27b5addd0bfbf1f83c70d8d",
+                "url": "https://api.github.com/repos/symfony/Translation/zipball/254931b0bce3c70f6f1d58a403873c2628260a5b",
+                "reference": "254931b0bce3c70f6f1d58a403873c2628260a5b",
                 "shasum": ""
             },
             "require": {
@@ -1300,7 +1300,7 @@
             ],
             "description": "Symfony Translation Component",
             "homepage": "http://symfony.com",
-            "time": "2014-04-18 21:02:40"
+            "time": "2014-05-04 16:56:58"
         },
         {
             "name": "symfony/twig-bridge",
@@ -1309,12 +1309,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/TwigBridge.git",
-                "reference": "eca5dfcc836a582dd5c5f6e8d683bcd79c7df82c"
+                "reference": "e11e36626b1a540d909ddc310562fa2555fb389e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/TwigBridge/zipball/eca5dfcc836a582dd5c5f6e8d683bcd79c7df82c",
-                "reference": "eca5dfcc836a582dd5c5f6e8d683bcd79c7df82c",
+                "url": "https://api.github.com/repos/symfony/TwigBridge/zipball/e11e36626b1a540d909ddc310562fa2555fb389e",
+                "reference": "e11e36626b1a540d909ddc310562fa2555fb389e",
                 "shasum": ""
             },
             "require": {
@@ -1374,7 +1374,7 @@
             ],
             "description": "Symfony Twig Bridge",
             "homepage": "http://symfony.com",
-            "time": "2014-04-28 17:44:51"
+            "time": "2014-05-03 09:54:10"
         },
         {
             "name": "symfony/validator",
@@ -1501,12 +1501,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Twig.git",
-                "reference": "4a6e7ff3d50db27c4f08952c5e0336effbfdea21"
+                "reference": "052eb5d1ed1b5b7755525e4e7af26faea1619747"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/4a6e7ff3d50db27c4f08952c5e0336effbfdea21",
-                "reference": "4a6e7ff3d50db27c4f08952c5e0336effbfdea21",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/052eb5d1ed1b5b7755525e4e7af26faea1619747",
+                "reference": "052eb5d1ed1b5b7755525e4e7af26faea1619747",
                 "shasum": ""
             },
             "require": {
@@ -1550,7 +1550,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2014-04-29 17:01:20"
+            "time": "2014-05-05 08:48:03"
         }
     ],
     "packages-dev": [

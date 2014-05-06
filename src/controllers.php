@@ -26,9 +26,9 @@ $app->match('/', function (Request $request) use ($app) {
     if ($form->isSubmitted()) {
         if ($form->isValid()) {
             $data = $form->getData();
-            $sql = "INSERT INTO `categories`(`category`) VALUES (?)";
-            $app['db']->executeUpdate($sql, array(
-                (string) $data['name']));
+            $app['db']->insert('categories', array(
+                'category' => (string) $data['name'],
+            ));
 
             return new Response(json_encode(array()));
         } else {
@@ -58,8 +58,29 @@ $app->match('/get-last-category', function () use ($app) {
 
 $app->match('/get-categories', function () use ($app) {
 
-    $categories = $app['db']->fetchAll('SELECT * FROM categories ORDER BY id');
+    $categories = $app['db']->fetchAll('SELECT * FROM categories ORDER BY id DESC');
     return $app['twig']->render('tables/category.html.twig', array(
                 'categories' => $categories));
 });
 
+$app->match('/delete-category-{id}', function ($id) use ($app) {
+
+    $app['db']->delete('categories', array(
+        'id' => (int) $id,
+    ));
+
+    return $id;
+});
+
+
+
+$app->match('/call-indicator', function (Request $request) use ($app) {
+
+
+    $message = $request->request->get('messages');
+    $type = $request->request->get('type');
+
+    return $app['twig']->render('indicators/fatal_error.html.twig', array(
+                'message' => $message,
+                'type' => $type));
+});

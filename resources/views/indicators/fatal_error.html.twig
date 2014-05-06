@@ -1,0 +1,13 @@
+<div class="row alert">
+    <div class="col-lg-12">
+        <div class="alert alert-dismissable alert-{{ type }}">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            {% if type == 'success' %}
+                <h4>{{ 'Infos_message'|trans }}</h4>
+            {% else %}
+                <h4>{{ 'Fatal_error'|trans }}</h4>
+            {% endif %}
+            <p>{{ message }}.</p>
+        </div>
+    </div>
+</div>

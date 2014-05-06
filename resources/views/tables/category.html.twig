@@ -4,11 +4,11 @@
     <td>{{category.category }}</td>
     <td>
         <button type="button" class="btn btn-info btn-xs">Modifier</button>
-        <button type="button" class="btn btn-danger btn-xs">Supprimer</button>   
+        <button type="button" class="btn btn-danger btn-xs delete-element" id="element-{{category.id }}" value="{{category.id }}">Supprimer</button>   
     </td>
 </tr>
 {% else %}
-<tr>
+<tr class="danger">
     <td colspan="3">{{'No_category'|trans }}</td>
 </tr>
 {% endfor %}

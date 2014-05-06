@@ -1,21 +1,25 @@
 
 $(document).ready(function() {
     var form = $('#form-valida');
-
+    
     form.submit(function(e) {
         e.preventDefault();
         $('[class^="form-group"]').removeClass('has-error');
         $(".list-errors").fadeOut('slow', function() {
             $(this).remove();
         });
-        $(".alert-success").remove();
+        $(".success-message").remove();
+        $('.row.alert').remove();
+
+
+
         $('#form-valida .form-group').removeClass('has-success');
         $.ajax({
             type: 'POST',
-            url: '#',
+            url: '',
             data: form.serialize(),
-            error: function(jqXHR, textStatus, errorThrown) {
-                $('#conent').html('Erreur...');
+            error: function(xhr, status, error) {
+                showMessage(getErrorMessage(xhr, status, error), 'danger');
             },
             success: function(htmlResponse) {
                 var obj = $.parseJSON(htmlResponse),
@@ -33,8 +37,8 @@ $(document).ready(function() {
                 } else {
                     $('#form-valida .form-group').addClass('has-success');
                     $('#form-valida')[0].reset();
-                    $('.form-group:first-child').before('<div class="form-group"><div class="col-lg-12"><div class="bs-component"><div class="alert alert-dismissable alert-success">OK pour l\'enregistrement</div></div></div>');
-                    alert('Enregistrement');
+
+                    $('.form-group:first-child').before('<div class="form-group success-message"><div class="col-lg-12"><div class="bs-component"><div class="alert alert-dismissable alert-success">OK pour l\'enregistrement</div></div></div>');
                     $(".alert-success").hide().fadeIn();
 
 
@@ -42,23 +46,65 @@ $(document).ready(function() {
                     $.ajax({
                         type: 'GET',
                         url: 'get-last-category',
-                        error: function(jqXHR, textStatus, errorThrown) {
-                            $('#conent').html('Erreur...');
+                        error: function(xhr, status, error) {
+                            showMessage(getErrorMessage(xhr, status, error), 'danger');
                         },
                         success: function(htmlResponse) {
+                            $('tr.danger').remove();
                             $('tbody').prepend(htmlResponse);
                             $('tr:eq(1)').hide().fadeIn();
-
-
-
                         }
                     });
-
-
                     return false;
                 }
             }
         });
 
     });
+
+
+    $(".delete-element").click(function() {
+        $('.row.alert').remove();
+        var idv = $(this).attr('value');
+
+        $.ajax({
+            type: 'POST',
+            url: 'delete-category-' + idv,
+            error: function(xhr, status, error) {
+                showMessage(getErrorMessage(xhr, status, error), 'danger');
+            },
+            success: function() {
+                $('#element-' + idv).closest('tr').fadeOut('slow', function() {
+                    $(this).remove();
+                    showMessage('Element ' + idv + ' supprimé', 'success');
+                });
+            }
+        });
+    });
+
 });
+
+
+(function($) {
+
+    showMessage = function(message, type) {
+        $.ajax({
+            type: 'POST',
+            url: 'call-indicator',
+            data: {messages: message,
+                type: type},
+            error: function() {
+                alert('La page que vous avez demandée n’a pas été trouvée.');
+            },
+            success: function(htmlResponse) {
+                $('.container.content').append(htmlResponse);
+            }
+        });
+    };
+
+    getErrorMessage = function(xhr, status, error, type) {
+        var message = status + ' ' + xhr.status + ' ' + error;
+
+        return message;
+    };
+})(jQuery);
