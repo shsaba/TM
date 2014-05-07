@@ -1,0 +1,15 @@
+{% for kindtasks in kindstasks %}
+<tr>
+    <td>{{kindtasks.id }}</td>
+    <td>{{kindtasks.kind }}</td>
+    <td><em>{{kindtasks.category }}</em></td>
+    <td>
+        <button type="button" class="btn btn-info btn-xs">Modifier</button>
+        <button type="button" class="btn btn-danger btn-xs delete-element" id="element-{{kindtasks.id }}" value="{{kindtasks.id }}">Supprimer</button>   
+    </td>
+</tr>
+{% else %}
+<tr class="danger">
+    <td colspan="3">{{'No_kinds_tasks'|trans }}</td>
+</tr>
+{% endfor %}

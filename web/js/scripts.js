@@ -1,7 +1,8 @@
 
 $(document).ready(function() {
-    var form = $('#form-valida');
-    
+    var form = $('#form-valida'),
+            type = $('h1').attr('id');
+
     form.submit(function(e) {
         e.preventDefault();
         $('[class^="form-group"]').removeClass('has-error');
@@ -45,7 +46,7 @@ $(document).ready(function() {
 
                     $.ajax({
                         type: 'GET',
-                        url: 'get-last-category',
+                        url: 'get-last-' + type,
                         error: function(xhr, status, error) {
                             showMessage(getErrorMessage(xhr, status, error), 'danger');
                         },
@@ -66,10 +67,9 @@ $(document).ready(function() {
     $(".delete-element").click(function() {
         $('.row.alert').remove();
         var idv = $(this).attr('value');
-
         $.ajax({
             type: 'POST',
-            url: 'delete-category-' + idv,
+            url: 'delete/' + type + '/' + idv,
             error: function(xhr, status, error) {
                 showMessage(getErrorMessage(xhr, status, error), 'danger');
             },

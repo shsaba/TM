@@ -3,8 +3,6 @@
 use Silex\Provider\TranslationServiceProvider;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
 use Silex\Provider\FormServiceProvider;
-use Silex\Provider\WebProfilerServiceProvider;
-use Silex\Provider\ServiceControllerServiceProvider;
 
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__ . '/../resources/views',
@@ -36,5 +34,6 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
 $app->register(new FormServiceProvider());
 
 $app->register(new Silex\Provider\ValidatorServiceProvider());
+$app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 
 return $app;

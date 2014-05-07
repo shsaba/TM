@@ -1,10 +1,23 @@
 Project_name : Tasks Manager V1.0
 Homepage: Accueil
-Tasks_Categories: Catégories des tâches
 
+Tasks_Categories: Catégories des tâches
+Categories : Catégories
 Category_name: Nom de la catégorie
 No_category: Pas de catégories
 Reports : Rapports
 
 Fatal_error : Erreur fatale
 Infos_message : Informations
+
+Kinds_Tasks: Types de tâches
+Kind_Tasks: Type de tâches
+Kind_Tasks_name: Nom du type de tâche
+No_kinds_tasks: Pas de types de tâches
+
+
+Settings: Paramètres
+Settings_categories : Catégories
+Settings_kindstasks : Types de tâches
+Settings_tasks : Tâches
+Settings_options: Options

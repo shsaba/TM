@@ -69,7 +69,8 @@
 
 {% block choice_widget_collapsed %}
 {% spaceless %}
-<select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
+<div class="col-lg-10">
+<select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %} class="form-control" id="select">
         {% if empty_value is not none %}
     <option value="">{{ empty_value|trans({}, translation_domain) }}</option>
         {% endif %}
@@ -83,6 +84,7 @@
         {% set options = choices %}
         {{ block('choice_widget_options') }}
 </select>
+</div>
 {% endspaceless %}
 {% endblock choice_widget_collapsed %}
 

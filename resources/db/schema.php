@@ -11,15 +11,15 @@ $kindsTasks = $schema->createTable('kindsTasks');
 $kindsTasks->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
 $kindsTasks->setPrimaryKey(array('id'));
 $kindsTasks->addColumn('kind', 'string', array('length' => 255));
+$kindsTasks->addColumn('category_id', 'integer', array('unsigned' => true));
+$kindsTasks->addForeignKeyConstraint($categories, array('category_id'), array('id'), array('onDelete' => "CASCADE"));
 
 $tasks = $schema->createTable('tasks');
 $tasks->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
 $tasks->setPrimaryKey(array('id'));
 $tasks->addColumn('title', 'string', array('length' => 255));
 $tasks->addColumn('kindTask_id', 'integer', array('unsigned' => true));
-$tasks->addColumn('category_id', 'integer', array('unsigned' => true));
 $tasks->addUniqueIndex(array('title'));
-$tasks->addForeignKeyConstraint($categories, array('category_id'), array('id'), array('onDelete' => "CASCADE"));
 $tasks->addForeignKeyConstraint($kindsTasks, array('kindTask_id'), array('id'), array('onDelete' => "CASCADE"));
 
 $report = $schema->createTable('report');
@@ -33,9 +33,14 @@ $tasksReport->addColumn('id', 'integer', array('unsigned' => true, 'autoincremen
 $tasksReport->setPrimaryKey(array('id'));
 $tasksReport->addColumn('title', 'string', array('length' => 255));
 $tasksReport->addColumn('content', 'text');
+$tasksReport->addColumn('category', 'text');
+$tasksReport->addColumn('kindTask', 'text');
+$tasksReport->addColumn('task', 'text');
+$tasksReport->addColumn('category_id', 'integer', array('unsigned' => true));
 $tasksReport->addColumn('kindTask_id', 'integer', array('unsigned' => true));
-$tasksReport->addColumn('report_id', 'integer', array('unsigned' => true));
-$tasksReport->addForeignKeyConstraint($report, array('report_id'), array('id'), array('onDelete' => "CASCADE"));
-
+$tasksReport->addColumn('task_id', 'integer', array('unsigned' => true));
+$tasksReport->addForeignKeyConstraint($categories, array('category_id'), array('id'));
+$tasksReport->addForeignKeyConstraint($kindsTasks, array('kindTask_id'), array('id'));
+$tasksReport->addForeignKeyConstraint($tasks, array('task_id'), array('id'));
 
 return $schema;

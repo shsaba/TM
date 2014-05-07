@@ -4,7 +4,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints as Assert;
 
+
 $app->match('/', function (Request $request) use ($app) {
+    return $app->redirect('main');
+});
+
+
+$app->match('/main', function (Request $request) use ($app) {
 
 
     $form = $app['form.factory']->createBuilder('form')
@@ -45,8 +51,10 @@ $app->match('/', function (Request $request) use ($app) {
 
     // display the form
     return $app['twig']->render('tasksCategories.html.twig', array(
-                'form' => $form->createView()));
-});
+                'form' => $form->createView(),
+                'type' => 'categories'));
+})
+->bind('categories');
 
 
 $app->match('/get-last-category', function () use ($app) {
@@ -56,6 +64,18 @@ $app->match('/get-last-category', function () use ($app) {
                 'categories' => $category));
 });
 
+
+$app->match('/get-last-kindtasks', function () use ($app) {
+
+    $kindstasks = $app['db']->fetchAll('SELECT k.id, kind, category FROM kindstasks k, categories c WHERE c.id=k.category_id ORDER BY id DESC LIMIT 1');
+    return $app['twig']->render('tables/kindstasks.html.twig', array(
+                'kindstasks' => $kindstasks));
+});
+
+
+
+
+
 $app->match('/get-categories', function () use ($app) {
 
     $categories = $app['db']->fetchAll('SELECT * FROM categories ORDER BY id DESC');
@@ -63,15 +83,20 @@ $app->match('/get-categories', function () use ($app) {
                 'categories' => $categories));
 });
 
-$app->match('/delete-category-{id}', function ($id) use ($app) {
+$app->match('/get-kinds-tasks', function () use ($app) {
 
-    $app['db']->delete('categories', array(
-        'id' => (int) $id,
-    ));
-
-    return $id;
+    $kindstasks = $app['db']->fetchAll('SELECT k.id, kind, category FROM kindstasks k, categories c WHERE c.id=k.category_id ORDER BY id DESC');
+    return $app['twig']->render('tables/kindstasks.html.twig', array(
+                'kindstasks' => $kindstasks));
 });
 
+$app->match('/delete/{type}/{id}', function ($type, $id) use ($app) {
+
+    $app['db']->delete((string) $type, array(
+        'id' => (int) $id,
+    ));
+    return 2;
+});
 
 
 $app->match('/call-indicator', function (Request $request) use ($app) {
@@ -84,3 +109,63 @@ $app->match('/call-indicator', function (Request $request) use ($app) {
                 'message' => $message,
                 'type' => $type));
 });
+
+
+$app->match('/kindstasks', function (Request $request) use ($app) {
+    $arrayQuery = array();
+    $statement = $app['db']->executeQuery('SELECT id,category FROM categories ORDER BY id DESC');
+    while ($tipo = $statement->fetch()) {
+        $arrayQuery[$tipo['id']] = $tipo['category'];
+    }
+
+    if (empty($arrayQuery)) {
+        return $app->redirect('main');
+    }
+    $form = $app['form.factory']->createBuilder('form')
+            ->add('kind', 'text', array(
+                'attr' => array(
+                    'placeholder' => 'Type de tâches',
+                ),
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                    new Assert\Length(array(
+                        'min' => 5))
+                ),
+                'label' => 'Type'
+            ))
+            ->add('category_id', 'choice', array(
+                'choices' => $arrayQuery,
+                'expanded' => false,
+                'label' => 'Catégorie'
+            ))
+            ->getForm();
+
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted()) {
+        if ($form->isValid()) {
+            $data = $form->getData();
+            $app['db']->insert('kindstasks', array(
+                'category_id' => (int) $data['category_id'],
+                'kind' => (string) $data['kind'],
+            ));
+
+            return new Response(json_encode(array()));
+        } else {
+            foreach ($form as $fieldName => $formField) {
+                $errorText = $formField->getErrorsAsString();
+                if (!empty($errorText)) {
+                    $errorss[$fieldName] = $errorText;
+                }
+            }
+
+            return json_encode($errorss);
+        }
+    }
+
+    // display the form
+    return $app['twig']->render('tasksKings.html.twig', array(
+                'form' => $form->createView(),
+                'type' => 'kindtasks'));
+})
+->bind('kindstasks');
