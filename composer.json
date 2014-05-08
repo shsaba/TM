@@ -4,12 +4,12 @@
         "silex/silex": "~1.1",
         "symfony/validator": "~2.3",
         "symfony/config": "~2.3",
-        "symfony/console" : "~2.3",
-        "symfony/finder" : "~2.2",
-        "symfony/form" : "~2.3",
+        "symfony/console": "~2.3",
+        "symfony/finder": "~2.2",
+        "symfony/form": "~2.3",
         "symfony/translation": "~2.3",
         "symfony/yaml": "~2.3",
-        "symfony/twig-bridge" : "~2.3",
+        "symfony/twig-bridge": "~2.3",
         "doctrine/dbal": "2.2.*",
         "twig/twig": ">=1.8,<2.0-dev"
     }

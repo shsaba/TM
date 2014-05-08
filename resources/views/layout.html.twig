@@ -4,6 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{{ app.request.basepath }}/css/bootstrap.css">
     <link rel="stylesheet" href="{{ app.request.basepath }}/css/bootswatch.min.css">
+    <link rel="stylesheet" href="{{ app.request.basepath }}/css/jquery-ui-1.10.4.custom.min.css">
 
 </head>
 <body>
@@ -20,24 +21,19 @@
             <div class="navbar-collapse collapse" id="navbar-main">
                 <ul class="nav navbar-nav">
                     <li class="active">
-                        <a href="../help/">{{ 'Reports'|trans }}</a>
-                    </li>
-                    <li>
-                        <a href="http://news.bootswatch.com">Blog</a>
+                        <a href="{{ url('repports') }}">{{ 'Reports'|trans }}</a>
                     </li>
                 </ul>
-                <form class="navbar-form navbar-left">
-                    <input type="text" class="form-control col-lg-8" placeholder="Search">
+                <form action="{{ url('repports') }}" class="navbar-form navbar-left" id="reportmanager" method="POST">
+                    <input type="text" name="dateofreport" id="dateofreport" class="form-control col-lg-8" placeholder="{{ 'DateOfReport'|trans }}">
                 </form>
 
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#">Link</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'Settings'|trans }} <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li><a href="{{ url('categories') }}">{{ 'Settings_categories'|trans }}</a></li>
                             <li><a href="{{ url('kindstasks') }}">{{ 'Settings_kindstasks'|trans }}</a></li>
-                            <li><a href="{{ url('kindstasks') }}">{{ 'Settings_tasks'|trans }}</a></li>
                             <li class="divider"></li>
                             <li><a href="#">Separated link</a></li>
                         </ul>
@@ -55,7 +51,8 @@
     </div>
 
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
     <script src="{{ app.request.basepath }}/js/bootstrap.min.js"></script>
     <script src="{{ app.request.basepath }}/js/scripts.js"></script>
 </body>

@@ -42,7 +42,9 @@
 
 {% block textarea_widget %}
 {% spaceless %}
-<textarea {{ block('widget_attributes') }}>{{ value }}</textarea>
+<div class="col-lg-10">
+    <textarea {{ block('widget_attributes') }} class="form-control" rows="3" id="textArea">{{ value }}</textarea>
+</div>
 {% endspaceless %}
 {% endblock textarea_widget %}
 

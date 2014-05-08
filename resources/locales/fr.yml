@@ -16,6 +16,13 @@ Kind_Tasks_name: Nom du type de tâche
 No_kinds_tasks: Pas de types de tâches
 
 
+Reports: Rapports
+Report: Rapport
+Report_Of: Rapport du
+No_report: Pas de rapports
+DateOfReport: Date du rapport
+
+
 Settings: Paramètres
 Settings_categories : Catégories
 Settings_kindstasks : Types de tâches

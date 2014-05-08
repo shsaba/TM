@@ -14,17 +14,11 @@ $kindsTasks->addColumn('kind', 'string', array('length' => 255));
 $kindsTasks->addColumn('category_id', 'integer', array('unsigned' => true));
 $kindsTasks->addForeignKeyConstraint($categories, array('category_id'), array('id'), array('onDelete' => "CASCADE"));
 
-$tasks = $schema->createTable('tasks');
-$tasks->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
-$tasks->setPrimaryKey(array('id'));
-$tasks->addColumn('title', 'string', array('length' => 255));
-$tasks->addColumn('kindTask_id', 'integer', array('unsigned' => true));
-$tasks->addUniqueIndex(array('title'));
-$tasks->addForeignKeyConstraint($kindsTasks, array('kindTask_id'), array('id'), array('onDelete' => "CASCADE"));
 
-$report = $schema->createTable('report');
+$report = $schema->createTable('reports');
 $report->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
 $report->setPrimaryKey(array('id'));
+$tasksReport->addColumn('note', 'text');
 $report->addColumn('date', 'date');
 
 
@@ -41,6 +35,5 @@ $tasksReport->addColumn('kindTask_id', 'integer', array('unsigned' => true));
 $tasksReport->addColumn('task_id', 'integer', array('unsigned' => true));
 $tasksReport->addForeignKeyConstraint($categories, array('category_id'), array('id'));
 $tasksReport->addForeignKeyConstraint($kindsTasks, array('kindTask_id'), array('id'));
-$tasksReport->addForeignKeyConstraint($tasks, array('task_id'), array('id'));
 
 return $schema;

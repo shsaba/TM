@@ -6,7 +6,9 @@ use Silex\Provider\FormServiceProvider;
 
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__ . '/../resources/views',
-    'twig.form.templates' => array('form_div_layout.html.twig', 'common/form_div_layout.html.twig'),
+    'twig.form.templates' => array(
+        'form_div_layout.html.twig',
+        'common/form_div_layout.html.twig'),
 ));
 
 
@@ -35,5 +37,7 @@ $app->register(new FormServiceProvider());
 
 $app->register(new Silex\Provider\ValidatorServiceProvider());
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
+
+
 
 return $app;

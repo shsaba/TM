@@ -12,11 +12,8 @@ $app['translator.messages'] = array(
 // Doctrine (db)
 $app['db.options'] = array(
     'driver' => 'pdo_mysql',
-    'host' => '127.0.0.1',
+    'host' => 'localhost',
     'dbname' => 'tasksmanager',
     'user' => 'root',
     'password' => '',
 );
-
-
-
