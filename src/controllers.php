@@ -195,7 +195,7 @@ $app->match('/report/{date}', function ($date, Request $request) use ($app) {
 $app->match('/last-from-categories', function () use ($app) {
 
     $category = $app['db']->fetchAll('SELECT * FROM categories ORDER BY id DESC LIMIT 1');
-    return $app['twig']->render('tables/category.html.twig', array(
+    return $app['twig']->render('tables/categories.html.twig', array(
                 'categories' => $category));
 });
 
