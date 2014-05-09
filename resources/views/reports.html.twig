@@ -4,19 +4,33 @@
 
 <h1 id="{{ report.date }}">{{ 'Report_Of'|trans }} {{ report.date }}</h1>
 
+
 <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-9">
         <div class="well bs-component">
             <form action="#" method="post" id="form-report" class="form-horizontal">
                 {{ form_widget(form) }}
                 <div class="form-group">
                     <div class="col-lg-10 col-lg-offset-2">
-                        <button type="submit" class="btn btn-primary" id="valid_btn">Submit</button>
+                        <button type="submit" class="btn btn-primary" id="valid_btn">{{'form_Edit'|trans}}</button>
                     </div>
                 </div>
             </form>
         </div>
-        <div id="conent"></div>
     </div>
+    <div class="col-lg-3">
+
+        <div class="list-group">
+            <a value="{{report.id}}" class="list-group-item" id="add-task-report">{{'Task_Add'|trans }}</a>
+            <a id="mail-report-{{report.id}}" class="list-group-item">{{'ReportToMail'|trans }}</a>
+            <a id="delete-report-{{report.id}}" class="list-group-item">{{'DeleteReport'|trans }}</a>
+        </div>     
+    </div>
+</div>
+
+{{ render(app.request.baseUrl ~ '/add-task-for-report-' ~ report.id) }}
+
+
+<div class="bs-docs-section">
 </div>
 {% endblock %}

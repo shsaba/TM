@@ -18,7 +18,7 @@ $kindsTasks->addForeignKeyConstraint($categories, array('category_id'), array('i
 $report = $schema->createTable('reports');
 $report->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
 $report->setPrimaryKey(array('id'));
-$tasksReport->addColumn('note', 'text');
+$report->addColumn('note', 'text');
 $report->addColumn('date', 'date');
 
 

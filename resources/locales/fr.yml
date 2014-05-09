@@ -1,5 +1,6 @@
 Project_name : Tasks Manager V1.0
 Homepage: Accueil
+Options: Options
 
 Tasks_Categories: Catégories des tâches
 Categories : Catégories
@@ -21,6 +22,10 @@ Report: Rapport
 Report_Of: Rapport du
 No_report: Pas de rapports
 DateOfReport: Date du rapport
+ReportToMail: Envoyer le rapport par mail
+DeleteReport: Supprimer le rapport
+
+Task_Add: Ajouter une tâche
 
 
 Settings: Paramètres
@@ -28,3 +33,6 @@ Settings_categories : Catégories
 Settings_kindstasks : Types de tâches
 Settings_tasks : Tâches
 Settings_options: Options
+
+form_Add: Ajouter
+form_Edit: Editer

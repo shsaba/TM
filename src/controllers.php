@@ -3,6 +3,7 @@
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form;
 
 $app->match('/', function () use ($app) {
     return $app->redirect('add-for-categories');
@@ -48,7 +49,7 @@ $app->match('/add-for-categories', function (Request $request) use ($app) {
         }
     }
 
-    // display the form
+// display the form
     return $app['twig']->render('tasksCategories.html.twig', array(
                 'form' => $form->createView(),
                 'type' => 'categories'));
@@ -109,7 +110,7 @@ $app->match('/add-for-kindstasks', function (Request $request) use ($app) {
         }
     }
 
-    // display the form
+// display the form
     return $app['twig']->render('kindsTasks.html.twig', array(
                 'form' => $form->createView(),
                 'type' => 'kindstasks'));
@@ -132,12 +133,12 @@ $app->match('/checking-reports', function (Request $request) use ($app) {
         ));
     }
 
-    return $app->redirect('report/' . $date);
+    return $app->redirect('report-' . $date);
 })->bind('repports');
 
 
 
-$app->match('/report/{date}', function ($date, Request $request) use ($app) {
+$app->match('/report-{date}', function ($date, Request $request) use ($app) {
 
     $sql = 'SELECT * FROM reports WHERE date = ?';
     $report = $app['db']->fetchAssoc($sql, array(
@@ -172,6 +173,8 @@ $app->match('/report/{date}', function ($date, Request $request) use ($app) {
             $response['note'] = $data['notes'];
             $app['db']->update('reports', $response, array(
                 'id' => $data['reportId']));
+
+            return true;
         } else {
             foreach ($form as $fieldName => $formField) {
                 $errorText = $formField->getErrorsAsString();
@@ -179,14 +182,108 @@ $app->match('/report/{date}', function ($date, Request $request) use ($app) {
                     $errorss[$fieldName] = $errorText;
                 }
             }
+            return false;
+        }
+    } else {
+        return $app['twig']->render('reports.html.twig', array(
+                    'report' => $report,
+                    'form' => $form->createView()));
+    }
+})->bind('make-report');
+
+
+
+
+
+
+
+
+
+
+
+$app->match('/add-task-for-report-{id}', function (Request $request, $id) use ($app) {
+
+    $categories = array();
+    $statement = $app['db']->executeQuery('SELECT id,category FROM categories ORDER BY 2 ASC');
+    while ($tipo = $statement->fetch()) {
+        $categories[$tipo['id']] = $tipo['category'];
+    }
+
+    if (empty($categories)) {
+        return $app->redirect('main');
+    }
+    $form = $app['form.factory']->createBuilder('form')
+            ->add('category_id', 'choice', array(
+                'choices' => $categories,
+                'expanded' => false,
+                'label' => 'Catégorie'
+            ))
+            ->add('kind_task_id', 'choice', array(
+                'choices' => array(),
+                'expanded' => false,
+                'label' => 'Type de tâche'
+            ))
+            ->add('kind', 'textarea', array(
+                'attr' => array(
+                    'placeholder' => 'Description de la tâche',
+                ),
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                    new Assert\Length(array(
+                        'min' => 5))
+                ),
+                'label' => 'Description'
+            ))
+            ->add('reportId', 'hidden', array(
+                'data' => $id,
+            ))
+            ->getForm();
+
+    $form->addEventListener(Form\FormEvents::PRE_SET_DATA, function(Form\FormEvent $event) use ($app) {
+        $form = $event->getForm();
+        if ($app['gitosis_config']->userExists($form['name']->getData())) {
+            $form->addError(new Form\FormError('User already exists'));
+        }
+    });
+
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted()) {
+        if ($form->isValid()) {
+            $data = $form->getData();
+            $app['db']->insert('tasksreport', array(
+                'category_id' => (int) $data['category_id'],
+                'kind' => (string) $data['kind'],
+            ));
+
+            return new Response(json_encode(array()));
+        } else {
+            foreach ($form as $fieldName => $formField) {
+                $errorText = $formField->getErrorsAsString();
+                if (!empty($errorText)) {
+                    $errorss[$fieldName] = $errorText;
+                }
+            }
+
+            return json_encode($errorss);
         }
     }
 
-
-    return $app['twig']->render('reports.html.twig', array(
-                'report' => $report,
+// display the form
+    return $app['twig']->render('taskReport.html.twig', array(
                 'form' => $form->createView()));
-})->bind('make-report');
+})->bind('add-task-for-report');
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -250,7 +347,6 @@ $app->match('/delete/{type}/{id}', function ($type, $id) use ($app) {
 
 
 $app->match('/call-indicator', function (Request $request) use ($app) {
-
 
     $message = $request->request->get('messages');
     $type = $request->request->get('type');

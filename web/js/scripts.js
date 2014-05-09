@@ -3,6 +3,7 @@ $(document).ready(function() {
 
     var form = $('#form-valida'),
             formReport = $('#form-report'),
+            formTaskReport = $('#form-task-report'),
             type = $('h1').attr('id');
 
     form.submit(function(e) {
@@ -34,7 +35,7 @@ $(document).ready(function() {
                     $.each(obj, function(key, value) {
                         $('#group-' + key).addClass('has-error');
 
-                        $('#group-' + key).after('<div class="form-group list-errors"><div class="col-lg-12"><div class="bs-component"><div class="alert alert-dismissable alert-danger">' + value + 'test</div></div></div>');
+                        $('#group-' + key).after('<div class="form-group list-errors"><div class="col-lg-12"><div class="bs-component"><div class="alert alert-dismissable alert-danger">' + value + '</div></div></div>');
                     });
                     $(".list-errors").hide().fadeIn();
                 } else {
@@ -66,7 +67,8 @@ $(document).ready(function() {
 
     formReport.submit(function(e) {
 
-
+        $('.row.alert').remove();
+        $(formReport.val() + '.form-group').removeClass('has-success');
         e.preventDefault();
 
         $.ajax({
@@ -74,12 +76,20 @@ $(document).ready(function() {
             url: '#',
             data: formReport.serialize(),
             error: function(xhr, status, error) {
-                $('#form_notes').css('background', 'red');
+                showMessage(getErrorMessage(xhr, status, error), 'danger');
             },
             success: function() {
-                $('#form_notes').css('background', 'green');
+                showMessage('Notes éditées', 'success');
+                $(formReport.val() + '.form-group').addClass('has-success');
             }
         });
+
+    });
+
+    formTaskReport.submit(function(e) {
+        e.preventDefault();
+
+        alert('test');
 
     });
 
@@ -126,7 +136,6 @@ $(document).ready(function() {
                     form = $('#reportmanager');
 
             if (date) {
-                showMessage(date, 'success');
                 form.submit();
             }
         }
@@ -135,9 +144,6 @@ $(document).ready(function() {
 
     $('#dateofreport').click(function() {
         $("#dateofreport").datepicker();
-
-
-
     });
 });
 
