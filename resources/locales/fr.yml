@@ -27,6 +27,9 @@ DeleteReport: Supprimer le rapport
 
 Task_Add: Ajouter une tâche
 
+Task : Tâche
+TasksList : Liste des tâches
+No_Tasks : Pas de tâches
 
 Settings: Paramètres
 Settings_categories : Catégories

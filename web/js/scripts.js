@@ -68,8 +68,10 @@ $(document).ready(function() {
     formReport.submit(function(e) {
 
         $('.row.alert').remove();
+        $('[class^="form-group"]').removeClass('has-error');
         $(formReport.val() + '.form-group').removeClass('has-success');
         e.preventDefault();
+
 
         $.ajax({
             type: 'POST',
@@ -78,19 +80,96 @@ $(document).ready(function() {
             error: function(xhr, status, error) {
                 showMessage(getErrorMessage(xhr, status, error), 'danger');
             },
-            success: function() {
-                showMessage('Notes éditées', 'success');
-                $(formReport.val() + '.form-group').addClass('has-success');
+            success: function(htmlResponse) {
+
+                var obj = $.parseJSON(htmlResponse),
+                        objCount = 0;
+                for (_obj in obj) {
+                    objCount++;
+                }
+                if (objCount !== 0) {
+                    $.each(obj, function(key, value) {
+                        $('#group-' + key).addClass('has-error');
+
+                        $('#group-' + key).after('<div class="form-group list-errors"><div class="col-lg-12"><div class="bs-component"><div class="alert alert-dismissable alert-danger">' + value + '</div></div></div>');
+                    });
+                    $(".list-errors").hide().fadeIn();
+                } else {
+                    $('#form-report #form .form-group:first-child').before('<div class="form-group success-message"><div class="col-lg-12"><div class="bs-component"><div class="alert alert-dismissable alert-success">OK pour l\'enregistrement</div></div></div>');
+                    $(".alert-success").hide().fadeIn();
+                }
+
+
             }
         });
-
     });
 
     formTaskReport.submit(function(e) {
         e.preventDefault();
+        var idReport = $('#form_reportId').attr('value');
 
-        alert('test');
+        $('[class^="form-group"]').removeClass('has-error');
+        $(formTaskReport.val() + '.form-group').removeClass('has-success');
+        $(".list-errors").fadeOut('slow', function() {
+            $(this).remove();
+        });
+        $(".success-message").remove();
+        $('.row.alert').remove();
 
+
+
+        $.ajax({
+            type: 'POST',
+            url: 'add-task-for-report-' + idReport,
+            data: formTaskReport.serialize(),
+            error: function(xhr, status, error) {
+                showMessage(getErrorMessage(xhr, status, error), 'danger');
+            },
+            success: function(htmlResponse) {
+                var obj = $.parseJSON(htmlResponse),
+                        objCount = 0;
+                for (_obj in obj) {
+                    objCount++;
+                }
+                if (objCount !== 0) {
+                    $.each(obj, function(key, value) {
+                        $('#group-' + key).addClass('has-error');
+
+                        $('#group-' + key).after('<div class="form-group list-errors"><div class="col-lg-12"><div class="bs-component"><div class="alert alert-dismissable alert-danger">' + value + '</div></div></div>');
+                    });
+                    $(".list-errors").hide().fadeIn();
+                } else {
+                    $('#form-task-report #form .form-group:first-child').before('<div class="form-group success-message"><div class="col-lg-12"><div class="bs-component"><div class="alert alert-dismissable alert-success">OK pour l\'enregistrement<button type="button" class="close" data-dismiss="alert">×</button></div></div></div>');
+                    $(".alert-success").hide().fadeIn();
+
+
+                    $.ajax({
+                        type: 'GET',
+                        url: 'last-from-tasks-reports',
+                        error: function(xhr, status, error) {
+                            showMessage(getErrorMessage(xhr, status, error) + type, 'danger');
+                        },
+                        success: function(htmlResponse) {
+                            $('tr.danger').remove();
+                            $('tbody').prepend(htmlResponse);
+                            $('tr:eq(1)').hide().fadeIn();
+                        }
+                    });
+                }
+
+
+            }
+        });
+    });
+
+    $('#form_category_id_report').ready(function() {
+        var category = $('#form_category_id_report option:selected').val();
+        getKindTask(category);
+
+    });
+    $('#form_category_id_report').change(function() {
+        var category = $('#form_category_id_report option:selected').val();
+        getKindTask(category);
     });
 
 
@@ -104,8 +183,7 @@ $(document).ready(function() {
             url: 'delete/' + type + '/' + idv,
             error: function(xhr, status, error) {
                 showMessage(getErrorMessage(xhr, status, error), 'danger');
-            },
-            success: function() {
+            }, success: function() {
                 $('#element-' + idv).closest('tr').fadeOut('slow', function() {
                     $(this).remove();
                     showMessage('Element ' + idv + ' supprimé', 'success');
@@ -120,8 +198,7 @@ $(document).ready(function() {
     $("#dateofreport").datepicker({
         altField: "#datepicker",
         closeText: 'Fermer',
-        prevText: 'Précédent',
-        nextText: 'Suivant',
+        prevText: 'Précédent', nextText: 'Suivant',
         currentText: 'Aujourd\'hui',
         monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
         monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
@@ -192,15 +269,29 @@ $(document).ready(function() {
             buttons: {
                 "Oui": function() {
                     $(this).dialog("close");
-                    alert('marche');
                     return 'true';
                 },
                 "Non": function() {
                     $(this).dialog("close");
-                    alert('marche pas');
                     return 'false';
                 }
             }
         });
     };
+
+    getKindTask = function(val) {
+        $.ajax({
+            type: 'POST',
+            url: 'load-kind-task',
+            data: {categorie: val},
+            error: function(xhr, status, error) {
+                showMessage(getErrorMessage(xhr, status, error), 'danger');
+            },
+            success: function(htmlResponse) {
+                $('#form_kind_task_id_report').empty();
+                $('#form_kind_task_id_report').append(htmlResponse);
+            }
+        });
+    };
+
 })(jQuery);

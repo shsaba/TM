@@ -3,7 +3,6 @@
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Form;
 
 $app->match('/', function () use ($app) {
     return $app->redirect('add-for-categories');
@@ -49,7 +48,6 @@ $app->match('/add-for-categories', function (Request $request) use ($app) {
         }
     }
 
-// display the form
     return $app['twig']->render('tasksCategories.html.twig', array(
                 'form' => $form->createView(),
                 'type' => 'categories'));
@@ -110,7 +108,6 @@ $app->match('/add-for-kindstasks', function (Request $request) use ($app) {
         }
     }
 
-// display the form
     return $app['twig']->render('kindsTasks.html.twig', array(
                 'form' => $form->createView(),
                 'type' => 'kindstasks'));
@@ -182,7 +179,7 @@ $app->match('/report-{date}', function ($date, Request $request) use ($app) {
                     $errorss[$fieldName] = $errorText;
                 }
             }
-            return false;
+            return json_encode($errorss);
         }
     } else {
         return $app['twig']->render('reports.html.twig', array(
@@ -194,7 +191,24 @@ $app->match('/report-{date}', function ($date, Request $request) use ($app) {
 
 
 
+$app->match('/load-kind-task', function (Request $request) use ($app) {
 
+
+    $categorie = $request->request->get('categorie');
+
+
+    $sql = 'SELECT * FROM kindstasks WHERE category_id = ?';
+    $report = $app['db']->fetchAll($sql, array(
+        (int) $categorie));
+
+
+    if (!empty($report)) {
+        return $app['twig']->render('tables/kindstasksoption.html.twig', array(
+                    'kindstasks' => $report));
+    } else {
+        return false;
+    }
+})->bind('load-kind-task');
 
 
 
@@ -209,28 +223,43 @@ $app->match('/add-task-for-report-{id}', function (Request $request, $id) use ($
         $categories[$tipo['id']] = $tipo['category'];
     }
 
-    if (empty($categories)) {
-        return $app->redirect('main');
+    $kindstasks = array();
+    $statement2 = $app['db']->executeQuery('SELECT id,kind FROM kindstasks ORDER BY 2 ASC');
+    while ($tipo = $statement2->fetch()) {
+        $kindstasks[$tipo['id']] = $tipo['kind'];
     }
+
     $form = $app['form.factory']->createBuilder('form')
-            ->add('category_id', 'choice', array(
+            ->add('category_id_report', 'choice', array(
                 'choices' => $categories,
                 'expanded' => false,
                 'label' => 'Catégorie'
             ))
-            ->add('kind_task_id', 'choice', array(
-                'choices' => array(),
+            ->add('kind_task_id_report', 'choice', array(
+                'choices' => $kindstasks,
                 'expanded' => false,
-                'label' => 'Type de tâche'
+                'label' => 'Type de tâche',
+                'required' => true,
             ))
-            ->add('kind', 'textarea', array(
+            ->add('title', 'text', array(
+                'attr' => array(
+                    'placeholder' => 'Titre de la tâche',
+                ),
+                'constraints' => array(
+                    new Assert\NotBlank(),
+                    new Assert\Length(array(
+                        'min' => 5))
+                ),
+                'label' => 'Titre'
+            ))
+            ->add('content', 'textarea', array(
                 'attr' => array(
                     'placeholder' => 'Description de la tâche',
                 ),
                 'constraints' => array(
                     new Assert\NotBlank(),
                     new Assert\Length(array(
-                        'min' => 5))
+                        'min' => 10))
                 ),
                 'label' => 'Description'
             ))
@@ -239,21 +268,16 @@ $app->match('/add-task-for-report-{id}', function (Request $request, $id) use ($
             ))
             ->getForm();
 
-    $form->addEventListener(Form\FormEvents::PRE_SET_DATA, function(Form\FormEvent $event) use ($app) {
-        $form = $event->getForm();
-        if ($app['gitosis_config']->userExists($form['name']->getData())) {
-            $form->addError(new Form\FormError('User already exists'));
-        }
-    });
-
     $form->handleRequest($request);
 
     if ($form->isSubmitted()) {
         if ($form->isValid()) {
             $data = $form->getData();
             $app['db']->insert('tasksreport', array(
-                'category_id' => (int) $data['category_id'],
-                'kind' => (string) $data['kind'],
+                'report_id' => (int) $data['reportId'],
+                'kindTask_id' => (int) $data['kind_task_id_report'],
+                'title' => (string) $data['title'],
+                'content' => (string) $data['content'],
             ));
 
             return new Response(json_encode(array()));
@@ -269,7 +293,6 @@ $app->match('/add-task-for-report-{id}', function (Request $request, $id) use ($
         }
     }
 
-// display the form
     return $app['twig']->render('taskReport.html.twig', array(
                 'form' => $form->createView()));
 })->bind('add-task-for-report');
@@ -278,7 +301,23 @@ $app->match('/add-task-for-report-{id}', function (Request $request, $id) use ($
 
 
 
+$app->match('/get-task-for-report-{id}', function (Request $request, $id) use ($app) {
 
+    $sql = 'SELECT kt.id, title, content, kind, category '
+            . 'FROM kindstasks kt, categories ca, tasksreport ta '
+            . 'WHERE kt.category_id = ca.id '
+            . 'AND ta.kindTask_id=kt.id '
+            . 'AND report_id= ? '
+            . 'ORDER BY kt.id ';
+
+    $tasksreport = $app['db']->fetchAll($sql, array(
+        (int) $id));
+
+
+
+    return $app['twig']->render('tables/tasksreport.html.twig', array(
+                'tasksreport' => $tasksreport));
+});
 
 
 
@@ -309,6 +348,18 @@ $app->match('/last-from-reports', function () use ($app) {
     $reports = $app['db']->fetchAll('SELECT * FROM reports ORDER BY id DESC LIMIT 1');
     return $app['twig']->render('tables/reports.html.twig', array(
                 'reports' => $reports));
+});
+
+$app->match('/last-from-tasks-reports', function () use ($app) {
+
+    $tasksreport = $app['db']->fetchAll('SELECT ta.id, kt.id, title, content, kind, category '
+            . 'FROM kindstasks kt, categories ca, tasksreport ta '
+            . 'WHERE kt.category_id = ca.id '
+            . 'AND ta.kindTask_id=kt.id '
+            . 'ORDER BY ta.id DESC '
+            . 'LIMIT 1');
+    return $app['twig']->render('tables/tasksreport.html.twig', array(
+                'tasksreport' => $tasksreport));
 });
 
 

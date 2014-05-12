@@ -27,13 +27,9 @@ $tasksReport->addColumn('id', 'integer', array('unsigned' => true, 'autoincremen
 $tasksReport->setPrimaryKey(array('id'));
 $tasksReport->addColumn('title', 'string', array('length' => 255));
 $tasksReport->addColumn('content', 'text');
-$tasksReport->addColumn('category', 'text');
-$tasksReport->addColumn('kindTask', 'text');
-$tasksReport->addColumn('task', 'text');
-$tasksReport->addColumn('category_id', 'integer', array('unsigned' => true));
+$tasksReport->addColumn('report_id', 'integer', array('unsigned' => true));
 $tasksReport->addColumn('kindTask_id', 'integer', array('unsigned' => true));
-$tasksReport->addColumn('task_id', 'integer', array('unsigned' => true));
-$tasksReport->addForeignKeyConstraint($categories, array('category_id'), array('id'));
+$tasksReport->addForeignKeyConstraint($report, array('report_id'), array('id'));
 $tasksReport->addForeignKeyConstraint($kindsTasks, array('kindTask_id'), array('id'));
 
 return $schema;
